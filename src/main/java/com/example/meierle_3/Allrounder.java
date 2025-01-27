@@ -5,10 +5,10 @@ import javafx.stage.Screen;
 
 public class Allrounder {
 
-    static int screenMaxWidth = (int) Screen.getPrimary().getVisualBounds().getWidth();
-    static int screenMaxHeight = (int) Screen.getPrimary().getVisualBounds().getHeight();
+    static double screenMaxWidth = Screen.getPrimary().getVisualBounds().getWidth();
+    static double screenMaxHeight = Screen.getPrimary().getVisualBounds().getHeight();
 
-    static Button createDefaultButton(int x, int y, String text) {
+    static Button createDefaultButton(double x, double y, String text) {
         Button button = new Button(text);
         button.setLayoutX(x);
         button.setLayoutY(y);

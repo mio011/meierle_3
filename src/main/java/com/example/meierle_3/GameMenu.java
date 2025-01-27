@@ -20,9 +20,11 @@ public class GameMenu extends Application {
     List<Player> players;
     int screenMaxWidth = (int) Screen.getPrimary().getVisualBounds().getWidth();
     int screenMaxHeight = (int) Screen.getPrimary().getVisualBounds().getHeight();
+    Stage primaryStage;
 
     @Override
     public void start(Stage stage) {
+        primaryStage = stage;
         pane = new Pane();
         pane.setBackground(new Background(new BackgroundFill(Color.GRAY, null, null)));
         Scene scene = new Scene(pane, Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
@@ -44,11 +46,17 @@ public class GameMenu extends Application {
         TextField textField = createTextField();
         Button newPlayerButton = createNewPlayerButton();
         newPlayerButton.setOnAction(e -> {
-            players.add(new Player(textField.getText()));
-            textField.setText("");
+            if(!textField.getText().isEmpty()) {
+                players.add(new Player(textField.getText()));
+                textField.setText("");
+            }
         });
         Button startGameButton = createStartButton();
-        pane.getChildren().addAll(newPlayerButton, startGameButton, textField);
+        Button cancelButton = Allrounder.createDefaultButton(Allrounder.screenMaxWidth / 2 - 100, Allrounder.screenMaxHeight / 2 + 180, "Verlassen");
+        cancelButton.setOnAction(e -> {
+            primaryStage.close();
+        });
+        pane.getChildren().addAll(newPlayerButton, startGameButton, textField, cancelButton);
     }
 
     private TextField createTextField() {
@@ -62,10 +70,12 @@ public class GameMenu extends Application {
 
 
     private Button createStartButton() {
-        Button startGameButton = Allrounder.createDefaultButton(screenMaxWidth / 2 + 50, screenMaxHeight / 2 + 20, "Start Game");
+        Button startGameButton = Allrounder.createDefaultButton((double) screenMaxWidth / 2 + 50, (double) screenMaxHeight / 2 + 20, "Start Game");
         startGameButton.setOnAction(e -> {
-            Game game = new Game(pane, players);
-            game.startGame();
+            if(players.size() > 1) {
+                Game game = new Game(pane, players, primaryStage);
+                game.startGame();
+            }
         });
         return startGameButton;
     }

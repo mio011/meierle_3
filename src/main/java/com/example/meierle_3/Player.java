@@ -13,4 +13,11 @@ public class Player {
         penaltyPoints++;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getPenaltyPoints() {
+        return penaltyPoints;
+    }
 }
